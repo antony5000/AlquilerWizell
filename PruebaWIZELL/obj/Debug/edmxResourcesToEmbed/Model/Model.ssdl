@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WIZELLModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="AlquilerHist">
+    <Key>
+      <PropertyRef Name="IdAlquiler" />
+    </Key>
+    <Property Name="IdAlquiler" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="IdJuego" Type="int" Nullable="false" />
+    <Property Name="FechaSalida" Type="date" Nullable="false" />
+    <Property Name="FechaEntrega" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AlquilerTrans">
+    <Key>
+      <PropertyRef Name="IdAlquiler" />
+    </Key>
+    <Property Name="IdAlquiler" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="IdJuego" Type="int" Nullable="false" />
+    <Property Name="FechaSalida" Type="date" Nullable="false" />
+    <Property Name="FechaEntrega" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Catalogo">
+    <Key>
+      <PropertyRef Name="IdJuego" />
+    </Key>
+    <Property Name="IdJuego" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Titulo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Genero" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Consola" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Cantidad" Type="int" Nullable="false" />
+    <Property Name="Descripcion" Type="varchar" MaxLength="200" />
+    <Property Name="FechaIngreso" Type="date" Nullable="false" />
+    <Property Name="Estatus" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Usuarios">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Contrasena" Type="varchar" MaxLength="16" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="20" />
+    <Property Name="Apellido" Type="varchar" MaxLength="20" />
+    <Property Name="Tipo" Type="varchar" MaxLength="15" />
+    <Property Name="telefono" Type="varchar" MaxLength="12" />
+    <Property Name="direccion" Type="varchar" MaxLength="200" />
+    <Property Name="estatus" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_AlquilerTrans_Catalogo">
+    <End Role="Catalogo" Type="Self.Catalogo" Multiplicity="1" />
+    <End Role="AlquilerTrans" Type="Self.AlquilerTrans" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Catalogo">
+        <PropertyRef Name="IdJuego" />
+      </Principal>
+      <Dependent Role="AlquilerTrans">
+        <PropertyRef Name="IdJuego" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AlquilerTrans_Usuarios">
+    <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+    <End Role="AlquilerTrans" Type="Self.AlquilerTrans" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuarios">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="AlquilerTrans">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="TotalAlquilados" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Cliente" Type="varchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="WIZELLModelStoreContainer">
+    <EntitySet Name="AlquilerHist" EntityType="Self.AlquilerHist" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AlquilerTrans" EntityType="Self.AlquilerTrans" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Catalogo" EntityType="Self.Catalogo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_AlquilerTrans_Catalogo" Association="Self.FK_AlquilerTrans_Catalogo">
+      <End Role="Catalogo" EntitySet="Catalogo" />
+      <End Role="AlquilerTrans" EntitySet="AlquilerTrans" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AlquilerTrans_Usuarios" Association="Self.FK_AlquilerTrans_Usuarios">
+      <End Role="Usuarios" EntitySet="Usuarios" />
+      <End Role="AlquilerTrans" EntitySet="AlquilerTrans" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

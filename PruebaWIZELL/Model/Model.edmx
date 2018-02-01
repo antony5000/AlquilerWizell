@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="WIZELLModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AlquilerHist">
+          <Key>
+            <PropertyRef Name="IdAlquiler" />
+          </Key>
+          <Property Name="IdAlquiler" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="IdJuego" Type="int" Nullable="false" />
+          <Property Name="FechaSalida" Type="date" Nullable="false" />
+          <Property Name="FechaEntrega" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AlquilerTrans">
+          <Key>
+            <PropertyRef Name="IdAlquiler" />
+          </Key>
+          <Property Name="IdAlquiler" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="IdJuego" Type="int" Nullable="false" />
+          <Property Name="FechaSalida" Type="date" Nullable="false" />
+          <Property Name="FechaEntrega" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Catalogo">
+          <Key>
+            <PropertyRef Name="IdJuego" />
+          </Key>
+          <Property Name="IdJuego" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Titulo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Genero" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Consola" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="200" />
+          <Property Name="FechaIngreso" Type="date" Nullable="false" />
+          <Property Name="Estatus" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Contrasena" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="20" />
+          <Property Name="Apellido" Type="varchar" MaxLength="20" />
+          <Property Name="Tipo" Type="varchar" MaxLength="15" />
+          <Property Name="telefono" Type="varchar" MaxLength="12" />
+          <Property Name="direccion" Type="varchar" MaxLength="200" />
+          <Property Name="estatus" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AlquilerTrans_Catalogo">
+          <End Role="Catalogo" Type="Self.Catalogo" Multiplicity="1" />
+          <End Role="AlquilerTrans" Type="Self.AlquilerTrans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Catalogo">
+              <PropertyRef Name="IdJuego" />
+            </Principal>
+            <Dependent Role="AlquilerTrans">
+              <PropertyRef Name="IdJuego" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AlquilerTrans_Usuarios">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="AlquilerTrans" Type="Self.AlquilerTrans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="AlquilerTrans">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="TotalAlquilados" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cliente" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="WIZELLModelStoreContainer">
+          <EntitySet Name="AlquilerHist" EntityType="Self.AlquilerHist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AlquilerTrans" EntityType="Self.AlquilerTrans" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Catalogo" EntityType="Self.Catalogo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AlquilerTrans_Catalogo" Association="Self.FK_AlquilerTrans_Catalogo">
+            <End Role="Catalogo" EntitySet="Catalogo" />
+            <End Role="AlquilerTrans" EntitySet="AlquilerTrans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AlquilerTrans_Usuarios" Association="Self.FK_AlquilerTrans_Usuarios">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="AlquilerTrans" EntitySet="AlquilerTrans" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WIZELLModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AlquilerHist">
+          <Key>
+            <PropertyRef Name="IdAlquiler" />
+          </Key>
+          <Property Name="IdAlquiler" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdJuego" Type="Int32" Nullable="false" />
+          <Property Name="FechaSalida" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FechaEntrega" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="AlquilerTrans">
+          <Key>
+            <PropertyRef Name="IdAlquiler" />
+          </Key>
+          <Property Name="IdAlquiler" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdJuego" Type="Int32" Nullable="false" />
+          <Property Name="FechaSalida" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FechaEntrega" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Catalogo" Relationship="Self.FK_AlquilerTrans_Catalogo" FromRole="AlquilerTrans" ToRole="Catalogo" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK_AlquilerTrans_Usuarios" FromRole="AlquilerTrans" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="Catalogo">
+          <Key>
+            <PropertyRef Name="IdJuego" />
+          </Key>
+          <Property Name="IdJuego" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Titulo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Genero" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Consola" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="FechaIngreso" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Estatus" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AlquilerTrans" Relationship="Self.FK_AlquilerTrans_Catalogo" FromRole="Catalogo" ToRole="AlquilerTrans" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Contrasena" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Apellido" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Tipo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="telefono" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="direccion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="estatus" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AlquilerTrans" Relationship="Self.FK_AlquilerTrans_Usuarios" FromRole="Usuarios" ToRole="AlquilerTrans" />
+        </EntityType>
+        <Association Name="FK_AlquilerTrans_Catalogo">
+          <End Role="Catalogo" Type="Self.Catalogo" Multiplicity="1" />
+          <End Role="AlquilerTrans" Type="Self.AlquilerTrans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Catalogo">
+              <PropertyRef Name="IdJuego" />
+            </Principal>
+            <Dependent Role="AlquilerTrans">
+              <PropertyRef Name="IdJuego" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AlquilerTrans_Usuarios">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="AlquilerTrans" Type="Self.AlquilerTrans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="AlquilerTrans">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WIZELLEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AlquilerHist" EntityType="Self.AlquilerHist" />
+          <EntitySet Name="AlquilerTrans" EntityType="Self.AlquilerTrans" />
+          <EntitySet Name="Catalogo" EntityType="Self.Catalogo" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" />
+          <AssociationSet Name="FK_AlquilerTrans_Catalogo" Association="Self.FK_AlquilerTrans_Catalogo">
+            <End Role="Catalogo" EntitySet="Catalogo" />
+            <End Role="AlquilerTrans" EntitySet="AlquilerTrans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AlquilerTrans_Usuarios" Association="Self.FK_AlquilerTrans_Usuarios">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="AlquilerTrans" EntitySet="AlquilerTrans" />
+          </AssociationSet>
+          <FunctionImport Name="TotalAlquilados" ReturnType="Collection(WIZELLModel.TotalAlquilados_Result)">
+            <Parameter Name="Cliente" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="TotalAlquilados_Result">
+          <Property Type="String" Name="UserId" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Apellido" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="IdJuego" Nullable="false" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="FechaSalida" Nullable="true" />
+          <Property Type="Int32" Name="Cantidad" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WIZELLModelStoreContainer" CdmEntityContainer="WIZELLEntities">
+          <EntitySetMapping Name="AlquilerHist">
+            <EntityTypeMapping TypeName="WIZELLModel.AlquilerHist">
+              <MappingFragment StoreEntitySet="AlquilerHist">
+                <ScalarProperty Name="IdAlquiler" ColumnName="IdAlquiler" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="IdJuego" ColumnName="IdJuego" />
+                <ScalarProperty Name="FechaSalida" ColumnName="FechaSalida" />
+                <ScalarProperty Name="FechaEntrega" ColumnName="FechaEntrega" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AlquilerTrans">
+            <EntityTypeMapping TypeName="WIZELLModel.AlquilerTrans">
+              <MappingFragment StoreEntitySet="AlquilerTrans">
+                <ScalarProperty Name="IdAlquiler" ColumnName="IdAlquiler" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="IdJuego" ColumnName="IdJuego" />
+                <ScalarProperty Name="FechaSalida" ColumnName="FechaSalida" />
+                <ScalarProperty Name="FechaEntrega" ColumnName="FechaEntrega" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Catalogo">
+            <EntityTypeMapping TypeName="WIZELLModel.Catalogo">
+              <MappingFragment StoreEntitySet="Catalogo">
+                <ScalarProperty Name="IdJuego" ColumnName="IdJuego" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="Genero" ColumnName="Genero" />
+                <ScalarProperty Name="Consola" ColumnName="Consola" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="WIZELLModel.Usuarios">
+              <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="estatus" ColumnName="estatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="TotalAlquilados" FunctionName="WIZELLModel.Store.TotalAlquilados">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WIZELLModel.TotalAlquilados_Result">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+                <ScalarProperty Name="IdJuego" ColumnName="IdJuego" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="FechaSalida" ColumnName="FechaSalida" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
